@@ -2,6 +2,7 @@ package snusthon.team1.repository.neo4j;
 
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
+import org.springframework.data.repository.query.Param;
 import snusthon.team1.domain.Card;
 
 import java.util.List;
@@ -13,4 +14,8 @@ public interface CardRepository extends Neo4jRepository<Card, Long> {
 
     @Query("MATCH (canvas:Canvas)-[:HAS_CARD]->(card:Card) WHERE canvas.userId = $userId RETURN card")
     List<Card> findAllByUserId(Long userId);
+
+    // CardRepository.java
+    @Query("MATCH (c:Card) WHERE ID(c) IN $cardIds RETURN c.content")
+    List<String> findCardContentsByIds(@Param("cardIds") List<Long> cardIds);
 }

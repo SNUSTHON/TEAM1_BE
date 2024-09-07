@@ -25,7 +25,7 @@ logging:
 
 openai:
   api:
-    key:
+    key: sk-MXEcRCf3Fdd4TTM_0enB7iPdHzRcStLAuuqJ_dMBBvT3BlbkFJEwRyB1LpirKdwn1VuebQ6H9gURg0POrJe6Y5XHbjIA
 
 server:
   port: '8080'

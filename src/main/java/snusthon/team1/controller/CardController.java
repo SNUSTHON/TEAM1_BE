@@ -1,6 +1,7 @@
 package snusthon.team1.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -81,5 +82,27 @@ public class CardController {
         return ResponseEntity.noContent().build(); // 204 No Content 응답
     }
 
+
+    // 사용자의 즐겨찾기 카드 목록을 반환하는 엔드포인트
+    @GetMapping("/favorites")
+    public ResponseEntity<List<String>> getUserFavoriteCards(@AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            List<String> favoriteCardContents = userService.getUserFavoriteCardContents(userDetails);
+            return ResponseEntity.ok(favoriteCardContents);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 사용자 또는 카드 목록을 찾지 못한 경우
+        }
+    }
+
+    // 카드 즐겨찾기 추가/제거 (토글 방식) 엔드포인트
+    @PostMapping("/favorites/toggle")
+    public ResponseEntity<String> toggleFavoriteCard(@RequestParam Long cardId, @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            userService.toggleFavoriteCard(cardId, userDetails);
+            return ResponseEntity.ok("Favorite status toggled successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or card not found.");
+        }
+    }
 
 }
