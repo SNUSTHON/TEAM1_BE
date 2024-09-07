@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import snusthon.team1.domain.Canvas;
+import snusthon.team1.domain.Card;
 import snusthon.team1.repository.neo4j.CanvasRepository;
+import snusthon.team1.repository.neo4j.CardRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class CanvasService {
 
     private final CanvasRepository canvasRepository;
+    private final CardRepository cardRepository;
 
     public Canvas createCanvas(String subject, Long userId) {
         Canvas canvas = new Canvas(subject, userId);
@@ -41,8 +44,25 @@ public class CanvasService {
         return null;
     }
 
+    @Transactional
     public void deleteCanvas(Long canvasId, Long userId) {
-        canvasRepository.deleteByIdAndUserId(canvasId, userId);
+        Canvas canvas = canvasRepository.findByIdAndUserId(canvasId, userId)
+                .orElseThrow(() -> new RuntimeException("Canvas not found"));
+
+        if (canvas.getRootCard() != null) {
+            deleteCardRecursively(canvas.getRootCard());
+        }
+
+        canvasRepository.delete(canvas);
+    }
+
+    private void deleteCardRecursively(Card card) {
+        if (card.getChildCards() != null) {
+            for (Card childCard : card.getChildCards()) {
+                deleteCardRecursively(childCard);
+            }
+        }
+        cardRepository.delete(card);
     }
 
     @Transactional(readOnly = true)
