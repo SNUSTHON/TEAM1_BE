@@ -23,6 +23,10 @@ logging:
     org:
       springframework: INFO
 
+openai:
+  api:
+    key:
+
 server:
   port: '8080'
 jwt:
