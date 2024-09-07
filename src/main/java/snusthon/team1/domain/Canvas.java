@@ -1,7 +1,8 @@
 package snusthon.team1.domain;
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
@@ -12,22 +13,25 @@ import java.util.List;
 
 @Node
 @Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Canvas {
 
     @Id
     @GeneratedValue
-    private String id;  // UUID나 다른 식별자 사용
+    private Long id;
     private String subject;
+    private Long userId;
 
-    @Relationship(type = "HAS_CARD")
-    private List<Card> cards = new ArrayList<>();;
+    @Relationship(type = "HAS_ROOT_CARD", direction = Relationship.Direction.OUTGOING)
+    private Card rootCard;
 
-    public Canvas(String subject, List<Card> cards) {
+    public Canvas(String subject, Long userId) {
         this.subject = subject;
-        this.cards = cards;
+        this.userId = userId;
     }
 
-    // Getters and Setters
+    public void setRootCard(Card card) {
+        this.rootCard = card;
+    }
 }

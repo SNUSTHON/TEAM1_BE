@@ -1,14 +1,11 @@
 package snusthon.team1.domain;
 
-import jakarta.persistence.GenerationType;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
-
 
 @Node
 @Getter
@@ -18,8 +15,9 @@ public class Memo {
 
     @Id
     @GeneratedValue
-    private String id;
-    private String content;  // 메모 내용
+    private Long id;
+  
+    private String content;
 
     public Memo(String content) {
         this.content = content;
