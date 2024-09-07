@@ -18,7 +18,7 @@ public class Memo {
 
     @Id
     @GeneratedValue
-    private String id;
+    private Long id;
     private String content;  // 메모 내용
 
     public Memo(String content) {
