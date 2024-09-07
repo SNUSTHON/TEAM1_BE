@@ -1,0 +1,29 @@
+spring:
+#  neo4j:
+#    uri: neo4j+s://76024857.databases.neo4j.io
+#    username: neo4j
+#    password: 8l56AjoxsV-pOPVbCHpnoj76WHG1oeEyMDHoHiMwG10
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    url: jdbc:mysql://localhost:3306/mindmap_db?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    password: 12341234
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: 'true'
+
+logging:
+  level:
+    org:
+      springframework: INFO
+
+server:
+  port: '8080'
+jwt:
+  secret: 729a616ce4a17f8b7dd522a228b4c712335e8374e8e95deaef309d4fbeb69cf2
+  expiration: '86400000'
