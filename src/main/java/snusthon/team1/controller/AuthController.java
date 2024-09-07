@@ -1,5 +1,7 @@
 package snusthon.team1.controller;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import snusthon.team1.model.mysql.User;
 import snusthon.team1.service.UserService;

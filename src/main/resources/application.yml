@@ -1,8 +1,9 @@
 spring:
-#  neo4j:
-#    uri: neo4j+s://76024857.databases.neo4j.io
-#    username: neo4j
-#    password: 8l56AjoxsV-pOPVbCHpnoj76WHG1oeEyMDHoHiMwG10
+  neo4j:
+    uri: neo4j+s://76024857.databases.neo4j.io
+    authentication:
+      username: neo4j
+      password: 8l56AjoxsV-pOPVbCHpnoj76WHG1oeEyMDHoHiMwG10
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
