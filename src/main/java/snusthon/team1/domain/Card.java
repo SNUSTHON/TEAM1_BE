@@ -15,13 +15,11 @@ import java.util.ArrayList;
 @Node
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Card {
 
     @Id
     @GeneratedValue
     private Long id;
-
     private String content;  // 카드의 내용(주제나 의견)
 
     @JsonIgnore
