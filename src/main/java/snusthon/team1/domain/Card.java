@@ -20,7 +20,7 @@ public class Card {
     @Id
     @GeneratedValue
     private Long id;
-
+  
     private String content;
 
     @Relationship(type = "HAS_CHILD", direction = Relationship.Direction.OUTGOING)

@@ -16,6 +16,7 @@ public class Memo {
     @Id
     @GeneratedValue
     private Long id;
+  
     private String content;
 
     public Memo(String content) {
