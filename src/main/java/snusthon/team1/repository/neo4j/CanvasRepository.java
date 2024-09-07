@@ -7,12 +7,12 @@ import snusthon.team1.domain.Canvas;
 import java.util.List;
 import java.util.Optional;
 
-public interface CanvasRepository extends Neo4jRepository<Canvas, String> {
+public interface CanvasRepository extends Neo4jRepository<Canvas, Long> {
     List<Canvas> findByUserId(Long userId);
 
-    Optional<Canvas> findByIdAndUserId(String id, Long userId);
+    Optional<Canvas> findByIdAndUserId(Long id, Long userId);
 
-    void deleteByIdAndUserId(String id, Long userId);
+    void deleteByIdAndUserId(Long id, Long userId);
 
     @Query("MATCH (c:Canvas) WHERE c.userId = $userId RETURN c.subject AS subject")
     List<String> findAllSubjectsByUserId(Long userId);

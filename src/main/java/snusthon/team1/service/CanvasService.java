@@ -11,26 +11,27 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CanvasService {
 
     private final CanvasRepository canvasRepository;
 
-    @Transactional
     public Canvas createCanvas(String subject, Long userId) {
         Canvas canvas = new Canvas(subject, userId);
         return canvasRepository.save(canvas);
     }
 
+    @Transactional(readOnly = true)
     public List<Canvas> getAllCanvasesByUserId(Long userId) {
         return canvasRepository.findByUserId(userId);
     }
 
-    public Optional<Canvas> getCanvasByIdAndUserId(String canvasId, Long userId) {
+    @Transactional(readOnly = true)
+    public Optional<Canvas> getCanvasByIdAndUserId(Long canvasId, Long userId) {
         return canvasRepository.findByIdAndUserId(canvasId, userId);
     }
 
-    @Transactional
-    public Canvas updateCanvas(String canvasId, String newSubject, Long userId) {
+    public Canvas updateCanvas(Long canvasId, String newSubject, Long userId) {
         Optional<Canvas> canvasOpt = canvasRepository.findByIdAndUserId(canvasId, userId);
         if (canvasOpt.isPresent()) {
             Canvas canvas = canvasOpt.get();
@@ -40,11 +41,11 @@ public class CanvasService {
         return null;
     }
 
-    @Transactional
-    public void deleteCanvas(String canvasId, Long userId) {
+    public void deleteCanvas(Long canvasId, Long userId) {
         canvasRepository.deleteByIdAndUserId(canvasId, userId);
     }
 
+    @Transactional(readOnly = true)
     public List<String> findAllSubjectsByUserId(Long userId) {
         return canvasRepository.findAllSubjectsByUserId(userId);
     }

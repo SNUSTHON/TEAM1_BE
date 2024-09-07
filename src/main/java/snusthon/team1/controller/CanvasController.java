@@ -34,7 +34,7 @@ public class CanvasController {
     }
 
     @GetMapping("/{canvasId}")
-    public ResponseEntity<Canvas> getCanvas(@PathVariable String canvasId, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Canvas> getCanvas(@PathVariable Long canvasId, @AuthenticationPrincipal UserDetails userDetails) {
         Long userId = userService.getUserIdByUsername(userDetails.getUsername());
         return canvasService.getCanvasByIdAndUserId(canvasId, userId)
                 .map(ResponseEntity::ok)
@@ -42,14 +42,14 @@ public class CanvasController {
     }
 
     @PutMapping("/{canvasId}")
-    public ResponseEntity<Canvas> updateCanvas(@PathVariable String canvasId, @RequestParam String newSubject, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Canvas> updateCanvas(@PathVariable Long canvasId, @RequestParam String newSubject, @AuthenticationPrincipal UserDetails userDetails) {
         Long userId = userService.getUserIdByUsername(userDetails.getUsername());
         Canvas updatedCanvas = canvasService.updateCanvas(canvasId, newSubject, userId);
         return updatedCanvas != null ? ResponseEntity.ok(updatedCanvas) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{canvasId}")
-    public ResponseEntity<Void> deleteCanvas(@PathVariable String canvasId, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Void> deleteCanvas(@PathVariable Long canvasId, @AuthenticationPrincipal UserDetails userDetails) {
         Long userId = userService.getUserIdByUsername(userDetails.getUsername());
         canvasService.deleteCanvas(canvasId, userId);
         return ResponseEntity.noContent().build();

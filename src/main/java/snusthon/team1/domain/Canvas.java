@@ -19,7 +19,7 @@ public class Canvas {
 
     @Id
     @GeneratedValue
-    private String id;
+    private Long id;
     private String subject;
     private Long userId;
 
