@@ -15,7 +15,7 @@ public class Connection {
 
     @Id
     @GeneratedValue
-    private String id;
+    private Long id;
     private String type;  // "SIMILAR", "NEUTRAL", "OPPOSITE"로 구분
 
     @Relationship(type = "FROM_CARD")
