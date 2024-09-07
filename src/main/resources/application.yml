@@ -1,9 +1,9 @@
 spring:
   neo4j:
-    uri: neo4j+s://76024857.databases.neo4j.io
+    uri: 
     authentication:
       username: neo4j
-      password: 8l56AjoxsV-pOPVbCHpnoj76WHG1oeEyMDHoHiMwG10
+      password:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -27,7 +27,7 @@ logging:
 
 openai:
   api:
-    key: sk-MXEcRCf3Fdd4TTM_0enB7iPdHzRcStLAuuqJ_dMBBvT3BlbkFJEwRyB1LpirKdwn1VuebQ6H9gURg0POrJe6Y5XHbjIA
+    key:
 
 
 server:
