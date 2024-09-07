@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import snusthon.team1.domain.Card;
 import snusthon.team1.domain.Canvas;
-import snusthon.team1.domain.Connection;
 import snusthon.team1.domain.Memo;
 import snusthon.team1.repository.neo4j.CardRepository;
 import snusthon.team1.repository.neo4j.CanvasRepository;
@@ -27,9 +26,9 @@ public class CardService {
                 .orElseThrow(() -> new RuntimeException("Canvas not found"));
 
         Card card = new Card(content);
-        canvas.getCards().add(card);
+        canvas.setRootCard(card);
+        cardRepository.save(card);
         canvasRepository.save(canvas);
-
         return card;
     }
 
@@ -40,20 +39,14 @@ public class CardService {
         List<String> expandedContents = gptService.generateRelatedTopics(parentCard.getContent());
 
         List<Card> expandedCards = new ArrayList<>();
-        List<String> connectionTypes = List.of("SIMILAR", "NEUTRAL", "OPPOSITE");
-
-        for (int i = 0; i < 3; i++) {
-            Card newCard = new Card(expandedContents.get(i));
-            Connection connection = new Connection(connectionTypes.get(i), parentCard, newCard);
-
-            parentCard.addConnection(connection);
+        for (String content : expandedContents) {
+            Card newCard = new Card(content);
+            parentCard.addChildCard(newCard);
             expandedCards.add(newCard);
         }
 
         cardRepository.save(parentCard);
-        cardRepository.saveAll(expandedCards);
-
-        return expandedCards;
+        return cardRepository.saveAll(expandedCards);
     }
 
     public Card getCard(Long cardId, Long userId) {
@@ -77,5 +70,22 @@ public class CardService {
                 .orElseThrow(() -> new RuntimeException("Card not found"));
 
         return card.getMemos();
+    }
+
+    @Transactional
+    public void deleteCard(Long cardId, Long userId) {
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new RuntimeException("Card not found"));
+
+        deleteCardRecursively(card);
+    }
+
+    private void deleteCardRecursively(Card card) {
+        if (card.getChildCards() != null) {
+            for (Card childCard : card.getChildCards()) {
+                deleteCardRecursively(childCard);
+            }
+        }
+        cardRepository.delete(card);
     }
 }

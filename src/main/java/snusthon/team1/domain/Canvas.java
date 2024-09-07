@@ -23,11 +23,15 @@ public class Canvas {
     private String subject;
     private Long userId;
 
-    @Relationship(type = "HAS_CARD")
-    private List<Card> cards = new ArrayList<>();
+    @Relationship(type = "HAS_ROOT_CARD", direction = Relationship.Direction.OUTGOING)
+    private Card rootCard;
 
     public Canvas(String subject, Long userId) {
         this.subject = subject;
         this.userId = userId;
+    }
+
+    public void setRootCard(Card card) {
+        this.rootCard = card;
     }
 }
