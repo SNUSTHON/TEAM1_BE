@@ -45,6 +45,7 @@ public class CardController {
         return ResponseEntity.ok(card);
     }
 
+    // 메모 추가
     @PostMapping("/{cardId}/memos")
     public ResponseEntity<Memo> addMemoToCard(@PathVariable Long cardId,
                                               @RequestParam String content,
@@ -54,6 +55,7 @@ public class CardController {
         return ResponseEntity.ok(memo);
     }
 
+    // 메모 조회
     @GetMapping("/{cardId}/memos")
     public ResponseEntity<List<Memo>> getMemosForCard(@PathVariable Long cardId,
                                                       @AuthenticationPrincipal UserDetails userDetails) {
@@ -61,4 +63,23 @@ public class CardController {
         List<Memo> memos = cardService.getMemosForCard(cardId, userId);
         return ResponseEntity.ok(memos);
     }
+
+    // 메모 수정
+    @PutMapping("/{cardId}/memos/{memoId}")
+    public ResponseEntity<Memo> updateMemo(@PathVariable Long cardId,
+                                           @PathVariable Long memoId,
+                                           @RequestParam String content) {
+        Memo updatedMemo = cardService.updateMemo(cardId, memoId, content);
+        return ResponseEntity.ok(updatedMemo);
+    }
+
+    // 메모 삭제
+    @DeleteMapping("/{cardId}/memos/{memoId}")
+    public ResponseEntity<Void> deleteMemo(@PathVariable Long cardId,
+                                           @PathVariable Long memoId) {
+        cardService.deleteMemo(cardId, memoId);
+        return ResponseEntity.noContent().build(); // 204 No Content 응답
+    }
+
+
 }

@@ -11,6 +11,7 @@ import snusthon.team1.repository.neo4j.CanvasRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -87,5 +88,56 @@ public class CardService {
             }
         }
         cardRepository.delete(card);
+    }
+
+    // 메모 수정
+    public Memo updateMemo(Long cardId, Long memoId, String content) {
+        // 카드가 존재하는지 확인
+        Optional<Card> card = cardRepository.findById(cardId);
+        if (card.isEmpty()) {
+            throw new IllegalArgumentException("Card not found");
+        }
+
+        // 해당 카드에 속한 메모가 존재하는지 확인
+        Optional<Memo> memo = card.get().getMemos().stream()
+                .filter(m -> m.getId().equals(memoId))
+                .findFirst();
+
+        if (memo.isEmpty()) {
+            throw new IllegalArgumentException("Memo not found");
+        }
+
+        // 메모 업데이트
+        Memo memoToUpdate = memo.get();
+        memoToUpdate.setContent(content);
+
+        cardRepository.save(card.get());
+
+        return memoToUpdate;
+    }
+
+    // 메모 삭제
+    @Transactional
+    public void deleteMemo(Long cardId, Long memoId) {
+        // 카드가 존재하는지 확인
+        Optional<Card> card = cardRepository.findById(cardId);
+        if (card.isEmpty()) {
+            throw new IllegalArgumentException("Card not found");
+        }
+
+        // 해당 카드에 속한 메모가 존재하는지 확인
+        Optional<Memo> memo = card.get().getMemos().stream()
+                .filter(m -> m.getId().equals(memoId))
+                .findFirst();
+
+        if (memo.isEmpty()) {
+            throw new IllegalArgumentException("Memo not found");
+        }
+
+        // 메모 삭제
+        card.get().getMemos().remove(memo.get());
+
+        // 카드 저장 (메모 삭제가 반영된 상태로)
+        cardRepository.save(card.get());
     }
 }
